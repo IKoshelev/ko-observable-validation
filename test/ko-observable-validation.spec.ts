@@ -1,7 +1,7 @@
 /// <reference path="../typings/index.d.ts" />
 
 
-describe("ko.inputController",()=>{
+describe("ko.validateObservable",()=>{
 		
 function expectTrue(val: boolean){
 	expect(val).toBe(true);
@@ -17,6 +17,16 @@ function expectTrue(val: boolean){
 		var subj = ko.validateObservable<number>(source, () => []);
 
 		expectTrue(source === subj);
+		
+	});
+
+	it('should accept a non-observable value, wrap  it in observable and proced with that observable',() => {
+		
+		var source = ko.observable(1);
+		var subj = ko.validateObservable<number>(1, () => []);
+
+		expectTrue(ko.isObservable(subj));
+		expectTrue(subj() === 1);
 		
 	});
 
@@ -118,6 +128,4 @@ function expectTrue(val: boolean){
 		subj.forceStateValid();
 		expectTrue(subj.validationMessages().length === 0);
 	});
-
-
 });

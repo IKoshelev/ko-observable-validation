@@ -11,7 +11,7 @@ interface ValidatedObservable<T> extends KnockoutObservable<T>{
 }
 
 interface ValidationMixin{
-    <T>(vmObs: KnockoutObservable<T>, validate: ValidationFunction<T>):  ValidatedObservable<T>
+    <T>(vmObs: KnockoutObservable<T> | T, validate: ValidationFunction<T>):  ValidatedObservable<T>
 }
                 
 
@@ -19,10 +19,17 @@ interface KnockoutStatic{
     validateObservable:ValidationMixin
 }
 
-ko.validateObservable  = <ValidationMixin> function<T>(initialObs: KnockoutObservable<T>, 
+ko.validateObservable  = <ValidationMixin> function<T>(initialObsOrValue: KnockoutObservable<T> | T, 
                 validationFunction: ValidationFunction<T>): ValidatedObservable<T> {
 
-    var obs = <ValidatedObservable<T>>initialObs;
+    var obs : ValidatedObservable<T>;
+    
+    if(ko.isObservable(initialObsOrValue)){
+        obs = <ValidatedObservable<T>>initialObsOrValue;
+    } else {
+        obs = <ValidatedObservable<T>>ko.observable(initialObsOrValue);
+    }
+    
 
     Object.defineProperty(obs,"validationFunction", {
         get: function(){

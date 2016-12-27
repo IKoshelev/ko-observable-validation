@@ -1,4 +1,4 @@
-describe("ko.inputController", function () {
+describe("ko.validateObservable", function () {
     function expectTrue(val) {
         expect(val).toBe(true);
     }
@@ -9,6 +9,12 @@ describe("ko.inputController", function () {
         var source = ko.observable(1);
         var subj = ko.validateObservable(source, function () { return []; });
         expectTrue(source === subj);
+    });
+    it('should accept a non-observable value, wrap  it in observable and proced with that observable', function () {
+        var source = ko.observable(1);
+        var subj = ko.validateObservable(1, function () { return []; });
+        expectTrue(ko.isObservable(subj));
+        expectTrue(subj() === 1);
     });
     it('should expose passed validation function as readonly property', function () {
         var fn = function () { return []; };
