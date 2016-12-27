@@ -10,6 +10,31 @@ describe("ko.validateObservable", function () {
         var subj = ko.validateObservable(source, function () { return []; });
         expectTrue(source === subj);
     });
+    it('should throw error if validation is added a second time or property names conflict', function () {
+        var source = ko.observable(1);
+        var subj = ko.validateObservable(source, function () { return []; });
+        var hasThrown = false;
+        try {
+            ko.validateObservable(subj, function () { return []; });
+        }
+        catch (err) {
+            hasThrown = true;
+        }
+        expectTrue(hasThrown);
+        var propNames = ["revalidate", "validationMessages", "validationFunction", "forceStateValid"];
+        propNames.forEach(function (name) {
+            var subj2 = ko.observable(5);
+            subj2[name] = function () { };
+            var hasThrown = false;
+            try {
+                ko.validateObservable(subj, function () { return []; });
+            }
+            catch (err) {
+                hasThrown = true;
+            }
+            expectTrue(hasThrown === true);
+        });
+    });
     it('should accept a non-observable value, wrap  it in observable and proced with that observable', function () {
         var source = ko.observable(1);
         var subj = ko.validateObservable(1, function () { return []; });

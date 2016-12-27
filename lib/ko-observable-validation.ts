@@ -29,7 +29,10 @@ ko.validateObservable  = <ValidationMixin> function<T>(initialObsOrValue: Knocko
     } else {
         obs = <ValidatedObservable<T>>ko.observable(initialObsOrValue);
     }
-    
+
+    if(obs.revalidate || obs.validationMessages || obs.validationFunction || obs.forceStateValid){
+        throw new Error("Attempt to add validation to observable that already has it added, or has confliction property names.");
+    }
 
     Object.defineProperty(obs,"validationFunction", {
         get: function(){
