@@ -1,0 +1,30 @@
+{
+  "name": "ko-command",
+  "version": "0.0.1",
+  "description": "Knockout validated input - special observable proxy intended for use a UI widget binding target and providing hooks for validation.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./node_modules/karma/bin/karma start karma.conf.js"
+  },
+  "devDependencies": {
+    "jasmine-core": "*",
+    "jquery": "*",
+    "karma": "*",
+    "karma-chrome-launcher": "*",
+    "karma-firefox-launcher": "*",
+    "karma-ie-launcher": "*",
+    "karma-edge-launcher": "*",
+    "karma-jasmine": "*",
+    "knockout": "*",
+    "q": "*",
+    "simulant": "^0.2.0",
+    "tsd": "*"
+  },
+  "keywords": [
+    "knockout",
+    "input",
+    "validated-input"
+  ],
+  "author": "koshelew@gmail.com",
+  "license": "ISC"
+}
