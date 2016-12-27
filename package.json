@@ -1,8 +1,7 @@
 {
-  "name": "ko-command",
-  "version": "0.0.1",
-  "description": "Knockout validated input - special observable proxy intended for use a UI widget binding target and providing hooks for validation.",
-  "main": "index.js",
+  "name": "ko-observable-validation",
+  "version": "1.0.0",
+  "description": "Knockout validated observable - validation mixin for observables that provides hooks to add validation to an observble. Built on the premise, that view should be dumb.",
   "scripts": {
     "test": "node ./node_modules/karma/bin/karma start karma.conf.js"
   },
@@ -22,8 +21,8 @@
   },
   "keywords": [
     "knockout",
-    "input",
-    "validated-input"
+    "validation",
+    "observable-validation"
   ],
   "author": "koshelew@gmail.com",
   "license": "ISC"
