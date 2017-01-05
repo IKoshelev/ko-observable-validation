@@ -20,8 +20,14 @@ module.exports = function(config) {
       'node_modules/jquery/dist/jquery.js',
       'node_modules/simulant/dist/simulant.umd.js',
       'lib/ko-observable-validation.js',
+      {pattern:'lib/ko-observable-validation.js.map', included: false, served: true},
+      {pattern:'lib/ko-observable-validation.ts', included: false, served: true},
       'test/*.spec.js',
+      {pattern:'test/*.spec.js.map', included: false, served: true},
+      {pattern:'test/*.spec.ts', included: false, served: true},
     ],
+
+    served: [],
 
 
     // list of files to exclude
