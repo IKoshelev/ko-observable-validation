@@ -81,5 +81,77 @@ After initial extension, observable is automatically considered valid, and the f
         subj.forceStateValid();
         console.log(subj.validationMessages().length); //0, manually set valid
 ``` 
+
+## How to use this
+Mainly we use it as follows: 
+1. `html input element gets the value` value is a string; input may have a widget like dropdown list; 
+2. `value converter extender pases string to desired data type` it adds validation messages if value is not parsable; does not handle actuall validation;
+3. `value is written into vm observable` at this point, validation function evaluates it an produces validation messages if there are problems; 
+
+View:
+```html
+    <input type="number" data-bind="value: foo.extend({integerInput:'Please enter integer'})">
+    <div data-bind="foreach: foo.validationMessages">
+        <div data-bind="text: $data">
+    </div>
+```
+
+Value converter extenders are not part of this library, but they typically look like this:
+```javascript
+// a typical knockout observable extender, as given here http://knockoutjs.com/documentation/extenders.html
+ko.extenders.integerInput = function (target, option) {
+    target.validationMessages = target.validationMessages || ko.observableArray();
+
+    var result = ko.pureComputed({
+        read: target,
+        write: function(newValue){
+            if(newValue.trim() === ""){
+                target(null);
+                return;
+            }
+
+            var intRegex = /^\d+$/;
+
+            if(newValue.match(intRegex) == false){
+                target.validationMessages(option || "Only integer allowed");
+                return;
+            }
+
+            newValue = parseInt(newValue);
+
+            if(target.revalidate && target() === newValue){
+                target.revalidate();
+                return;
+            }
+            target(newValue);
+
+        }
+    }).extend({notify: 'always'});
+
+    result.validationMessages = target.validationMessages;
+
+    // return new computed
+    return result;
+}
+```
+
+VM:
+```javascript
+    var vm = {};
+
+    vm.foo =  ko.validateObservable(100, function (val) {  
+            if (typeof val !== 'number') {
+                return ["Number is required"];
+            }
+            
+            if (val >= 5) {
+                return ["Value must be lower than 5"];
+            }
+
+            return [];
+        });
+```
+
+## Dev info
 Developed in TypeScript (if you are new to TS - don't worry, just add `lib\ko-obsevable-validation.js` to your project).
 Tested with knockout 3.4.1 against evergreen browsers (latest Chrome, Edge, FireFox) and IE11.  
