@@ -84,9 +84,9 @@ After initial extension, observable is automatically considered valid, and the f
 
 ## How to use this
 Mainly we use it as follows:  
-1.`html input element gets the value.` Value is a string; input may have a widget like dropdown list;  
-2.`value converter extender pases string to desired data type.` It adds validation messages if value is not parsable; does not handle actuall validation;  
-3.`value is written into vm observable.` At this point, validation function evaluates it an produces validation messages if there are problems;  
+`html input element gets the value.` Value is a string; input may have a widget like dropdown list;  
+`value converter extender pases string to desired data type.` It adds validation messages if value is not parsable; does not handle actuall validation;  
+`value is written into vm observable.` At this point, validation function evaluates it an produces validation messages if there are problems;  
 
 View:
 ```html
