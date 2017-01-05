@@ -1,3 +1,4 @@
+/// <reference path="../typings/index.d.ts" />
 describe("ko.validateObservable", function () {
     function expectTrue(val) {
         expect(val).toBe(true);

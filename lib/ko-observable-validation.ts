@@ -1,4 +1,6 @@
 /// <reference path="../typings/index.d.ts" />
+//https://github.com/IKoshelev/ko-observable-validation v.1.0.0
+//license - https://opensource.org/licenses/MIT
 
 type ValidationFunction<T> 
         = ( val:T)=>string[];
