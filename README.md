@@ -81,3 +81,5 @@ After initial extension, observable is automatically considered valid, and the f
         subj.forceStateValid();
         console.log(subj.validationMessages().length); //0, manually set valid
 ``` 
+Developed in TypeScript (if you are new to TS - don't worry, just add `lib\ko-obsevable-validation.js` to your project).
+Tested with knockout 3.4.1 against evergreen browsers (latest Chrome, Edge, FireFox) and IE11.  
