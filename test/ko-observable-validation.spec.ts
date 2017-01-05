@@ -33,7 +33,7 @@ function expectTrue(val: boolean){
 		}
 		expectTrue(hasThrown);
 
-		var propNames: Array<keyof ValidatedObservable<number>> = ["revalidate","validationMessages","validationFunction","forceStateValid"];
+		var propNames: Array<keyof ValidatedObservable<number>> = ["revalidate","validationFunction","forceStateValid"];
 		propNames.forEach((name) => {
 			var subj2 = ko.observable(5);
 			subj2[name] = () => {};
@@ -47,6 +47,31 @@ function expectTrue(val: boolean){
 			expectTrue(hasThrown === true);
 		});
 
+	});
+
+	it("should allow preexisting 'validationMessages' property on an observable, but throw if it is not an observable array",() => {
+		
+		var source = <ObservableWithValidationMessages<number>>ko.observable(1);
+		source.validationMessages = <any>{};
+
+		var hasThrown = false;
+		try{
+			ko.validateObservable(source,() => []);
+		} catch (err){
+			hasThrown = true;
+		}
+		expectTrue(hasThrown);
+
+		source = <ObservableWithValidationMessages<number>>ko.observable(1);
+		source.validationMessages = ko.observableArray<string>();
+		hasThrown = false;
+
+		try{
+			ko.validateObservable(source,() => []);
+		} catch (err){
+			hasThrown = true;
+		}
+		expectTrue(hasThrown == false);
 	});
 
 	it('should accept a non-observable value, wrap  it in observable and proced with that observable',() => {

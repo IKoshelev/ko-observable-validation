@@ -3,11 +3,14 @@
 type ValidationFunction<T> 
         = ( val:T)=>string[];
 
-interface ValidatedObservable<T> extends KnockoutObservable<T>{
+interface ObservableWithValidationMessages<T> extends KnockoutObservable<T>{
+     validationMessages: KnockoutObservableArray<string>;
+}
+
+interface ValidatedObservable<T> extends ObservableWithValidationMessages<T>{
     readonly validationFunction: ValidationFunction<T>;
     revalidate(): void;
     forceStateValid():void;
-    validationMessages: KnockoutObservableArray<string>;
 }
 
 interface ValidationMixin{
@@ -19,7 +22,7 @@ interface KnockoutStatic{
     validateObservable:ValidationMixin
 }
 
-ko.validateObservable  = <ValidationMixin> function<T>(initialObsOrValue: KnockoutObservable<T> | T, 
+ko.validateObservable  = <ValidationMixin> function<T>(initialObsOrValue: ObservableWithValidationMessages<T> | KnockoutObservable<T> | T, 
                 validationFunction: ValidationFunction<T>): ValidatedObservable<T> {
 
     var obs : ValidatedObservable<T>;
@@ -30,8 +33,18 @@ ko.validateObservable  = <ValidationMixin> function<T>(initialObsOrValue: Knocko
         obs = <ValidatedObservable<T>>ko.observable(initialObsOrValue);
     }
 
-    if(obs.revalidate || obs.validationMessages || obs.validationFunction || obs.forceStateValid){
+    if(obs.revalidate || obs.validationFunction || obs.forceStateValid){
         throw new Error("Attempt to add validation to observable that already has it added, or has confliction property names.");
+    }
+
+    obs.validationMessages = obs.validationMessages || ko.observableArray<string>();
+
+    function isObservableArrray(obj:any):boolean{
+        return ko.isObservable(obj) && ((<any>obj).destroyAll !== undefined);
+    }
+
+    if(isObservableArrray(obs.validationMessages) == false){
+        throw new Error("observable passed for extension already has a property 'validationMessages' but it is not an observable array.");
     }
 
     Object.defineProperty(obs,"validationFunction", {
@@ -39,8 +52,6 @@ ko.validateObservable  = <ValidationMixin> function<T>(initialObsOrValue: Knocko
             return validationFunction;
         }
     })
-
-    obs.validationMessages = ko.observableArray<string>();
 
     function clearValidationMessages(){
         obs.validationMessages([]);
