@@ -20,7 +20,7 @@ Inside of validation function you are free to use your own code for validation o
  var threshold = ko.observable(10);
 
  var subj = ko.validateObservable(ko.observable(1), function (val) {
-            //value convertion is handled by ko bindings and extenders used in views,
+            //value convertion is handled by ko bindings and extenders used in views (see below),
             //but validation is only handled here
             if (typeof val !== 'number') {
                 return ["Number is required"];
@@ -84,9 +84,9 @@ After initial extension, observable is automatically considered valid, and the f
 
 ## How to use this
 Mainly we use it as follows: 
-1. `html input element gets the value` value is a string; input may have a widget like dropdown list; 
-2. `value converter extender pases string to desired data type` it adds validation messages if value is not parsable; does not handle actuall validation;
-3. `value is written into vm observable` at this point, validation function evaluates it an produces validation messages if there are problems; 
+1.`html input element gets the value.` Value is a string; input may have a widget like dropdown list; 
+2.`value converter extender pases string to desired data type.` It adds validation messages if value is not parsable; does not handle actuall validation;
+3.`value is written into vm observable.` At this point, validation function evaluates it an produces validation messages if there are problems; 
 
 View:
 ```html
